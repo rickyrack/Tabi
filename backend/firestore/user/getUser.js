@@ -1,5 +1,6 @@
-const { doc, addDoc, getDoc } = require("firebase/firestore")
+const { doc, getDoc } = require("firebase/firestore")
 const { db } = require("../../firebase.config");
+const addUser = require("./addUser");
 
 const getUser = async (user) => {
     const userRef = doc(db, 'users', user.id);
@@ -7,8 +8,8 @@ const getUser = async (user) => {
 
     try {
         const userSnap = await getDoc(userRef);
-        if (!userSnap.exists) {
-            userData = await addDoc(user.id);
+        if (!userSnap.exists()) {
+            userData = await addUser(user);
         }
         else {
             userData = userSnap.data();
@@ -16,7 +17,8 @@ const getUser = async (user) => {
 
         return userData;
     } catch (error) {
-        return console.log(error);
+        console.log(error);
+        return false;
     }
 }
 

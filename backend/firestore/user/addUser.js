@@ -7,9 +7,9 @@ const addUser = async (user) => {
     
     try {
         const userSnap = await getDoc(userRef);
-        if (!userSnap.exists) {
+        if (!userSnap.exists()) {
             await setDoc(userRef, {
-                createdAt: Date.UTC(),
+                createdAt: Date.now(),
                 username: user.username
             });
             userData = await getDoc(userRef);
@@ -17,7 +17,8 @@ const addUser = async (user) => {
 
         return userData;
     } catch (error) {
-        return console.log(error);
+        console.log(error);
+        return false;
     }
 }
 

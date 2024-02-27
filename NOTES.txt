@@ -1,0 +1,8 @@
+make tab names not case sensitive will require checks in multiple different files
+uids for tab ids should be a fixed length and perhaps a better uid gen system too
+add variable wins amount for "both" tab type
+tab members should be displayed as @nickname
+dont forget to add total to tab display and tabs display too? idk about tabs
+obviously all other management features for tabs and whatnot buttons, make sure they are all their own functions
+    so they can be used elsewhere
+tabi pfp zoom out a little?

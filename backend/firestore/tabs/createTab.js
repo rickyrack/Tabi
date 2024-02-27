@@ -1,7 +1,18 @@
-const { doc, setDoc } = require("firebase/firestore")
+const { doc, setDoc, getDoc } = require("firebase/firestore")
 const { db } = require("../../firebase.config");
+const getTabs = require("./getTabs");
 
 const createTab = async (tabName, tabType, creatorId, userId) => {
+    // userId is the user that is NOT the original creator
+    const creatorTabs = await getTabs(creatorId);
+    const otherTabs = await getTabs(userId);
+    const checkTabs = [...creatorTabs, ...otherTabs];
+    const tabExists = checkTabs.find(tab => tab.name === tabName);
+    if (tabExists) {
+        console.log(`User ${creatorId} already has a tab named ${tabName}`);
+        return false;
+    }
+
     const tabTypeList = ['money', 'wins', 'both'];
     const uid = Math.floor(Date.now() / 10 ** 19 * creatorId);
     console.log(Date.now())
@@ -13,12 +24,12 @@ const createTab = async (tabName, tabType, creatorId, userId) => {
         return false;
     }
     try {
-        const newTab = await setDoc(tabRef, {
-            createdAt: Date.UTC(),
+        await setDoc(tabRef, {
+            createdAt: Date.now(),
             entries: [],
             metadata: {
-                lastNameChange: Date.UTC() - 24 * 60 * 60 * 1000,
-                prevName: undefined
+                lastNameChange: Date.now() - 24 * 60 * 60 * 1000,
+                prevName: null
             },
             name: tabName,
             creator: creatorId,
@@ -28,8 +39,11 @@ const createTab = async (tabName, tabType, creatorId, userId) => {
             ],
             type: tabType
         });
+
+        return await getDoc(tabRef);
     } catch (error) {
-        return console.log(error);
+        console.log(error);
+        return false;
     }
 }
 
