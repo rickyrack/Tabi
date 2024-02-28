@@ -14,10 +14,11 @@ const createTab = async (tabName, tabType, creatorId, userId) => {
     }
 
     const tabTypeList = ['money', 'wins', 'both'];
-    const uid = Math.floor(Date.now() / 10 ** 19 * creatorId);
-    console.log(Date.now())
+    let uid = Math.floor(Date.now() / 10 ** 19 * creatorId).slice(2, 9);
+    while (uid.length !== 8) {
+        uid = Math.floor(Date.now() / 10 ** 19 * creatorId).slice(2, 9);
+    }
     console.log(uid)
-    // trim uids from beginning so they are all same length
     const tabRef = doc(db, 'tabs', `${uid}`);
     if (!tabTypeList.includes(tabType)) {
         console.log(`${creatorId} used invalid tab type: ${tabType}`);

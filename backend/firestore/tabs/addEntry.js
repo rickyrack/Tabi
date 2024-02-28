@@ -7,7 +7,7 @@ const addEntry = async (userId, tabId, amt, reason) => {
         console.log('Tab does not exist.');
         return false;
     }
-    else if (amt.toString().split('.')[1].length > 2 && amt.toString().includes('.')) {
+    else if (amt.toString().length != 1 && amt.toString().split('.')[1].length > 2 && amt.toString().includes('.')) {
         console.log(`Tab: ${tabId} value ${amt} invalid.`);
         return false;
     }

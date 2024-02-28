@@ -20,9 +20,9 @@ const genTab = (tabData) => {
 
     const tab = new EmbedBuilder()
         .setTitle(`${tabData.name}`)
-        .setDescription(`Members: ${tabData.users[0]} and ${tabData.users[1]}`)
+        .setDescription(`Members:\n<@${tabData.users[0]}>\n<@${tabData.users[1]}>`)
         .setFields(fields)
-        .setColor([0, 205, 227])
+        .setColor([20, 128, 158])
 
     return tab;
 }

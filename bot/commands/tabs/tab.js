@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('@discordjs/builders');
 const { SlashCommandBuilder } = require('discord.js');
 const create = require('../../helper/tabs/create');
+const me = require('../../helper/tabs/me');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -80,8 +81,9 @@ module.exports = {
 			case 'create':
 				await create(interaction);
 				break;
-		
-			default:
+
+			case 'me':
+				await me(interaction);
 				break;
 		}
 	},

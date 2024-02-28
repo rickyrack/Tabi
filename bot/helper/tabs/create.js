@@ -27,7 +27,7 @@ const create = async (i) => {
 
     const createEmbed = new EmbedBuilder()
         .setTitle(`📜 ${tabName} 📜`)
-        .setDescription(`You have no entries in your Tab. \n Use /add ${tabName} to get started.`)
+        .setDescription(`You have no entries in your Tab.\nUse /add ${tabName} to get started.`)
         .setColor([0, 205, 227])
 
     let msg = await i.editReply({
