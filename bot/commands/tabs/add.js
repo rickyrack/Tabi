@@ -14,10 +14,19 @@ module.exports = {
 				.setDescription("What tab do you want to add to?")
 				.setRequired(true)
 				.setAutocomplete(true))
+		.addUserOption(option =>
+			option.setName('winner')
+			.setDescription('Who won this time?')
+			.setRequired(true))
         .addNumberOption(option =>
-            option.setName('amount')
-                .setDescription("What do you want to add to the Tab? 💸(Ex: 1.50/10/7.24) / 🥇(Ex: 1/2/3)")
-                .setRequired(true))
+            option.setName('stake')
+                .setDescription("Default stake is $0.01! 💸(Ex: 1.50/10/7.24)")
+                .setRequired(false))
+		.addNumberOption(option =>
+				option.setName('wins')
+				.setDescription('Default wins is 1! 🥇(Ex: 1/2/3)')
+				.setMaxValue(99)
+				.setRequired(false))
 		.addStringOption(option =>
 			option.setName('description')
 				.setDescription("Optional: Add on entry description.")
@@ -37,17 +46,19 @@ module.exports = {
 	async execute(interaction) {
 		const user = interaction.user;
         const tabName = interaction.options.getString('name');
-		const amount = interaction.options.getNumber('amount');
+		const winner = interaction.options.getUser('winner');
+		const stake = interaction.options?.getNumber('stake');
+		const wins = interaction.options?.getNumber('wins') || undefined;
 		const reason = interaction.options?.getString('description') || undefined;
 		const tabs = await getTabs(interaction.user.id);
 		const tab = tabs.find(checkTab => checkTab.name === tabName);
 		
 
-		const updatedTab = await addEntry(user.id, tab?.id, amount, reason);
+		const updatedTab = await addEntry(user.id, tab?.id, winner, stake, wins, reason);
 		console.log(updatedTab)
 
 		if (!updatedTab) {
-			const errorEmbed = genError('Your tab name may be spelled wrong or your amount is invalid.\nAmount Formats -\n💸 Money: 1.50/10/7.24\n🥇 Wins: 1/2/3\nBoth: (Same as Money)')
+			const errorEmbed = genError('Your tab name may be spelled wrong or your stake/wins are invalid.\nFormat -\n💸 Stake: 1.50/10/7.24\n🥇 Wins: 1/2/3')
 
 			return await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
 		}

@@ -1,35 +1,46 @@
 const { doc, getDoc, updateDoc } = require("firebase/firestore")
 const { db } = require("../../firebase.config");
 
-const addEntry = async (userId, tabId, amt, reason) => {
-    console.log(amt)
+const addEntry = async (userId, tabId, winner, stake, wins, reason) => {
     if (!tabId) {
         console.log('Tab does not exist.');
         return false;
     }
-    else if (amt.toString().length != 1 && amt.toString().split('.')[1].length > 2 && amt.toString().includes('.')) {
-        console.log(`Tab: ${tabId} value ${amt} invalid.`);
+    else if (stake.toString().length != 1 && stake.toString().split('.')[1].length > 2 && stake.toString().includes('.')) {
+        console.log(`Tab: [${tabId}] stake value [${stake}] is invalid.`);
         return false;
     }
+    else if (wins > 99 || wins.toString().split('.').length > 1) {
+        console.log(`Tab: [${tabId}] wins value [${wins}] is invalid.`);
+        return false;
+    }
+
+    if (!wins) wins = 1;
     const tabRef = doc(db, 'tabs', tabId);
 
     try {
         const tabSnap = await getDoc(tabRef);
+        const tabData = tabSnap.data();
+        const type = tabData.type;
 
-        if (tabSnap.data().users.includes(userId)) {
-            const prevEntries = tabSnap.data().entries;
+        const entryData = {
+            stake: type === 'stake' || type === 'both' ? stake : null,
+            wins: type === 'wins' || type === 'both' ? wins : null,
+            winner: winner.id,
+            reason: reason || null,
+            createdAt: Date.now()
+        }
+
+        if (tabData.data().users.includes(userId)) {
+            const prevEntries = tabData.entries;
             await updateDoc(tabRef, {
-                'entries': [...prevEntries, {
-                    amount: amt,
-                    reason: reason || null,
-                    createdAt: Date.now()
-                }]
+                'entries': [...prevEntries, entryData]
             });
-            const tabData = await getDoc(tabRef);
-            return tabData.data();
+            const newTab = await getDoc(tabRef);
+            return newTab.data();
         }
         else {
-            console.log(`Tab: ${tabId} cannot be edited by ${userId}.`);
+            console.log(`Tab: [${tabId}] cannot be edited by [${userId}].`);
             return false;
         }
     } catch (error) {

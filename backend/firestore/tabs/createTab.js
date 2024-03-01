@@ -9,19 +9,18 @@ const createTab = async (tabName, tabType, creatorId, userId) => {
     const checkTabs = [...creatorTabs, ...otherTabs];
     const tabExists = checkTabs.find(tab => tab.name === tabName);
     if (tabExists) {
-        console.log(`User ${creatorId} already has a tab named ${tabName}`);
+        console.log(`User [${creatorId}] already has a tab named [${tabName}]`);
         return false;
     }
 
-    const tabTypeList = ['money', 'wins', 'both'];
-    let uid = Math.floor(Date.now() / 10 ** 19 * creatorId).slice(2, 9);
+    const tabTypeList = ['money', 'stake', 'both'];
+    let uid = Math.floor(Date.now() / 10 ** 19 * creatorId).toString().slice(2, 10);
     while (uid.length !== 8) {
-        uid = Math.floor(Date.now() / 10 ** 19 * creatorId).slice(2, 9);
+        uid = Math.floor(Date.now() / 10 ** 19 * creatorId).toString().slice(2, 10);
     }
-    console.log(uid)
     const tabRef = doc(db, 'tabs', `${uid}`);
     if (!tabTypeList.includes(tabType)) {
-        console.log(`${creatorId} used invalid tab type: ${tabType}`);
+        console.log(`[${creatorId}] used invalid tab type: [${tabType}]`);
         return false;
     }
     try {

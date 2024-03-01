@@ -17,16 +17,16 @@ module.exports = {
 		.setDescription("Create a tab with someone.")
 		.addStringOption(option =>
 			option.setName('name')
-				.setDescription("What is your new tab's name")
+				.setDescription("Your tab's name. Ex: Poker Nick Steve, poker ns, NS SSBros, horse wins, nightout ash and sue.")
 				.setRequired(true)
 				.setMaxLength(15)
 				.setMinLength(3))
 		.addStringOption(option =>
 			option.setName('type')
-				.setDescription('Do you want a money or wins tracking tab?')
+				.setDescription('Do you want tab to track your stakes, wins, or both?')
 				.setRequired(true)
 				.addChoices(
-					{ name: 'Money', value: 'money'},
+					{ name: 'Stake', value: 'stake'},
 					{ name: 'Wins', value: 'wins'},
 					{ name: 'Both', value: 'both'}
 					))

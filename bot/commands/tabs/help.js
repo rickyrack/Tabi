@@ -18,7 +18,7 @@ module.exports = {
                 { name: '/tab [tab-name] clear', value: "Clear out a tab's entries."},
                 { name: '/tab [tab-name] remove', value: 'Send a tab to the shadow realm.'},
                 { name: '/tab rename [tab-name] [new-tab-name]', value: 'Rename a tab, allowed once every 24 hours.'},
-                { name: '/add [tab-name] [ 1.50 | 1 ]', value: 'Add an entry to a tab. Can be money or # of wins.'}
+                { name: '/add [tab-name] [ 1.50 | 1 ]', value: 'Add an entry to a tab. Can be a stake or # of wins.'}
             )
 
 		let msg = await interaction.reply({ embeds: [helpEmbed] });

@@ -8,7 +8,8 @@ const me = async (i) => {
   if (!tabs || tabs.length === 0) {
     const noTabsEmbed = new EmbedBuilder()
       .setTitle("📜 Tabi 📜")
-      .setDescription("You don't have any tabs!\nUse /create [tab-name] to get started.");
+      .setDescription("You don't have any tabs!\nUse /create [tab-name] to get started.")
+      .setColor([0, 205, 227])
 
     return await i.reply({ embeds: [noTabsEmbed], ephemeral: true });
   }
@@ -17,12 +18,12 @@ const me = async (i) => {
 
   const getClientType = (type) => {
     switch (type) {
-      case "money":
-        return "Money";
+      case "stake":
+        return "Stake";
       case "wins":
         return "Wins";
       case "both":
-        return "Money and Wins";
+        return "Stake and Wins";
     }
   };
 
@@ -39,7 +40,8 @@ const me = async (i) => {
 
   const allTabsEmbed = new EmbedBuilder()
     .setTitle("My Tabs")
-    .setDescription("Below are your active tabs, you can edit them and also look at your tab history.")
+    .setDescription("Below are your active tabs, you can edit tabs and view your tab history.")
+    .setColor([0, 205, 227])
     .setFields(fields);
 
   let msg = await i.reply({ embeds: [allTabsEmbed], ephemeral: true });
